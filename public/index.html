@@ -1,0 +1,29 @@
+<html>
+<head>
+	<title>InstaO | A feed of Instagram photos near the University of Oregon. Made by Emerald Media Gropu in Eugene.</title>
+
+	<link rel="stylesheet" href="normalize.css">
+	<link rel="stylesheet" href="app.css">
+
+	<script src="/socket.io/socket.io.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.2/angular-sanitize.min.js"></script>
+	<script src="app.js"></script>
+
+</head>
+
+<body ng-app>
+	
+	<h3>InstaO</h3>
+	<p>We don't monitor this.</p>
+	<hr>
+
+	<div ng-controller="PhotoCtrl">  
+		<section class="photo" ng-repeat="photo in photos | orderBy: created_time">
+			<img src="{{photo.images.low_resolution.url}}"></img>
+			<p class="caption">{{photo.caption.text}}</p>
+		</section>      
+	</div>
+</body>
+</html>

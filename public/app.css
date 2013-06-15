@@ -1,0 +1,14 @@
+body {
+	margin: 15px;
+}
+
+.photo {
+	width: 300px;
+	padding: 5px;
+	float: left;
+	height: 350px;
+	overflow: hidden;
+}
+.caption {
+	font-size: 12px;
+}
