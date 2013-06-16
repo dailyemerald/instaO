@@ -25,6 +25,13 @@ io.on 'connection', (socket) ->
 app.get '/mem', (req, res) ->
 	res.json process.memoryUsage()
 
+app.get '/random', (req, res) ->
+	res.json last_set[0]
+
+app.get '/push_test', (req, res) ->
+	res.json []
+	io.sockets.emit 'new', instagram.example_photo
+
 instagram.getTagMedia 'goducks', (err, photos) ->
 	console.log "got #{photos.length} photos back"
 	console.log photos

@@ -1,6 +1,10 @@
+<!DOCTYPE html>
 <html>
 <head>
-	<title>InstaO | A feed of Instagram photos near the University of Oregon. Made by Emerald Media Gropu in Eugene.</title>
+	<title>InstaO: Instagram photos near the University of Oregon in Eugene</title>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+
 
 	<link rel="stylesheet" href="normalize.css">
 	<link rel="stylesheet" href="app.css">
@@ -15,17 +19,21 @@
 
 <body ng-app>
 	
-	<h3>InstaO</h3>
-	<p>We don't monitor this.</p>
-	<hr>
+	<header>
+		<h3>InstaO</h3>
+		<p>The real-time feed of Instagram photos near UO. Not monitored by Emerald staff.</p>
+	</header>
 
 	<div ng-controller="PhotoCtrl">  
-		<section class="photo" ng-repeat="photo in photos | orderBy: created_time">
+		<section class="photo" ng-repeat="photo in photos | orderBy: photo.created_time">
 			<img src="{{photo.images.low_resolution.url}}"></img>
 			<p class="caption">{{photo.caption.text}}</p>
 		</section>      
 	</div>
 
-	<a href="https://github.com/dailyemerald/instao">GitHub</a>
+	<footer>
+		Made by <a href="http://twitter.com/ivarvong">@ivarvong</a> / Emerald Media Group in Eugene. 
+		<a href="https://github.com/dailyemerald/instao">Code</a> on GitHub.
+	</footer>
 </body>
 </html>

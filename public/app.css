@@ -1,14 +1,41 @@
-body {
-	margin: 15px;
+header {	
+	margin-bottom: 5px;
+	background: #333;
+	color: #EEE;
+	box-shadow: 0 1px 10px rgba(0, 0, 0, 0.8);
+	position: fixed;
+	width: 100%;
+	font-weight: 300;
+	overflow: hidden;
+	height: 55px;
+	line-height: 2em;
+}
+header h3 {
+	display: inline-block;
+	padding-left: 20px;
+	padding: 10px;
+	margin: 0;
+}
+header p {
+	display: inline;
+	margin: 0;
 }
 
 .photo {
 	width: 300px;
+
 	padding: 5px;
-	float: left;
+	display: inline-block;	
 	height: 350px;
 	overflow: hidden;
 }
 .caption {
 	font-size: 12px;
+}
+
+footer {
+	border-top: 1px solid #CCC;
+	padding: 10px;
+	font-size: 12px;
+	background: #FCFCFC;
 }
