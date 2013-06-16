@@ -43,7 +43,7 @@ update_geo_media = (object_id) ->
 		console.log('geo', data)
 
 # Instagram's webhook hits this
-app.post '/notify/:id', (req, res) ->
+app.all '/notify/:id', (req, res) ->
 	if req.query and req.query['hub.mode'] is 'subscribe'
 		console.log 'Confirming new Instagram real-time subscription for #{req.params.id}...'
 		res.send req.query['hub.challenge'] 
