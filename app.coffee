@@ -45,7 +45,7 @@ update_geo_media = (object_id) ->
 
 app.get '/notify/:id', (req, res) -> # confirm the subscription
 	if req.query and req.query['hub.mode'] is 'subscribe'
-		console.log 'Confirming new Instagram real-time subscription for #{req.params.id}...'
+		console.log "Confirming new Instagram real-time subscription for #{req.params.id} with #{req.query['hub.challenge']}"
 		res.send req.query['hub.challenge'] 
 	else
 		console.log "Weird request to /notify, didn't have a hub.mode..."
@@ -61,7 +61,9 @@ app.post '/notify/:id', (req, res) -> # receive the webhook, we got a new photo!
 
 	res.send 200
 
-
+app.get '/list', (req, res) ->
+	instagram.listSubscriptions (err, resp, data) ->
+		res.json [err, resp, data]
 
 app.get '/build', (req, res) ->
 	instagram.buildTagSubscription 'goducks', (err, data) ->

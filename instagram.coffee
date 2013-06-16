@@ -6,7 +6,7 @@ exports.getAuthURL = ->
 exports.getDeleteURL = (subscriptionID) ->
     "https://api.instagram.com/v1/subscriptions?client_secret=#{process.env.CLIENT_SECRET}&id=#{subscriptionID}&client_id=#{process.env.CLIENT_ID}"
 
-exports.getSubscriptionListURL = ->
+exports.getSubscriptionListURL = ->    
     "https://api.instagram.com/v1/subscriptions?client_secret=#{process.env.CLIENT_SECRET}&client_id=#{process.env.CLIENT_ID}"
 
 exports.getGeographyMediaRequest = (geographyID) ->
@@ -17,7 +17,7 @@ exports.getTagMediaRequest = (tag_name) ->
   
 exports.listSubscriptions = (callback) ->
   request {url: exports.getSubscriptionListURL}, (error, response, body) ->
-    callback error, body
+    callback error, response, body
 
 exports.buildGeographySubscription = (builder, subscriptionCallback) ->
   #builder = {
