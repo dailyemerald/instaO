@@ -74,6 +74,9 @@ exports.getGeoMedia = (geographyID, callback) ->
   request exports.getGeographyMediaRequest(geographyID), (error, response, body) ->     
     callback error, JSON.parse(body)
 
+
+
+
 exports.example_photo = {
   "attribution": null,
   "tags": [

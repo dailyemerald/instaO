@@ -24,12 +24,14 @@
 		<p>The real-time feed of Instagram photos near UO. Not monitored by Emerald staff.</p>
 	</header>
 
+	<div class="main">
 	<div ng-controller="PhotoCtrl">  
-		<section class="photo" ng-repeat="photo in photos | orderBy: photo.created_time">
+		<section class="photo" ng-repeat="photo in photos">
 			<img src="{{photo.images.low_resolution.url}}"></img>
 			<p class="caption">{{photo.caption.text}}</p>
 		</section>      
 	</div>
+	</div><!-- .main -->
 
 	<footer>
 		Made by <a href="http://twitter.com/ivarvong">@ivarvong</a> / Emerald Media Group in Eugene. 

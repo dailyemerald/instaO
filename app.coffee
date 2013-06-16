@@ -7,11 +7,11 @@ instagram = require './instagram'
 last_set = []
 
 app.configure ->
-  app.set 'views', __dirname + '/views'
-  app.set 'view engine', 'ejs'  
-  app.use express.static(__dirname + "/public")
-  app.use express.bodyParser()
-  app.use express.cookieParser()
+	app.set 'views', __dirname + '/views'
+	app.set 'view engine', 'ejs'  
+	app.use express.static(__dirname + "/public")
+	app.use express.bodyParser()
+	app.use express.cookieParser()
 
 io.set('log level', 1)
 
@@ -22,17 +22,59 @@ io.configure ->
 io.on 'connection', (socket) ->
 	socket.emit 'bootstrap', last_set
 
-app.get '/mem', (req, res) ->
+app.get '/stats', (req, res) ->
 	res.json process.memoryUsage()
-
-app.get '/random', (req, res) ->
-	res.json last_set[0]
-
-app.get '/push_test', (req, res) ->
-	res.json []
-	io.sockets.emit 'new', instagram.example_photo
 
 instagram.getTagMedia 'goducks', (err, photos) ->
 	console.log "got #{photos.length} photos back"
 	console.log photos
 	last_set = photos.data
+
+update_tag_media = (object_id) ->
+	instagram.getTagMedia(object_id), (err, data) ->
+		last_set = data.data
+		io.sockets.emit 'bootstrap', last_set #TODO: refactor
+		console.log('tag', data)
+
+update_geo_media = (object_id) ->
+	instagram.getGeoMedia(object_id), (err, data) ->
+		last_set = data.data
+		io.sockets.emit 'bootstrap', last_set #TODO: refactor
+		console.log('geo', data)
+
+# Instagram's webhook hits this
+app.post '/notify/:id', (req, res) ->
+	if req.query and req.query['hub.mode'] is 'subscribe'
+		console.log 'Confirming new Instagram real-time subscription for #{req.params.id}...'
+		res.send req.query['hub.challenge'] 
+		return
+
+	notifications = req.body
+	console.log 'Notification for', req.params.id # '. Had', notifications.length, 'item(s). Subscription ID:', req.body[0].subscription_id
+	console.log notifications
+
+	for notification in notifications
+		update_tag_media(notification.object_id) if notification.object is "tag"	        
+		update_geo_media(notification.object_id) if notification.object is "geo"	        
+
+	res.send 200
+
+
+
+app.get '/build', (req, res) ->
+	instagram.buildTagSubscription 'goducks', (err, data) ->
+		res.json {err: err, data: data}
+
+
+
+
+
+
+
+
+
+### blah blah blah below
+
+#app.get '/push_test', (req, res) ->
+#	res.send 200, ''
+#	io.sockets.emit 'new', instagram.example_photo	

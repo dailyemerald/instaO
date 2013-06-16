@@ -7,27 +7,36 @@ header {
 	width: 100%;
 	font-weight: 300;
 	overflow: hidden;
-	height: 55px;
-	line-height: 2em;
+	height: 44px;
+	line-height: 44px;
 }
 header h3 {
-	display: inline-block;
-	padding-left: 20px;
-	padding: 10px;
+	display: inline-block;	
+	padding: 3px;
+	padding-left: 6px;
 	margin: 0;
+	font-size: 20px;
 }
 header p {
 	display: inline;
 	margin: 0;
+	font-size: 14px;
+}
+
+.main {
+	padding-top: 44px;
 }
 
 .photo {
 	width: 300px;
-
 	padding: 5px;
 	display: inline-block;	
 	height: 350px;
 	overflow: hidden;
+}
+.photo img {
+	width: 300px;
+	height: 300px;
 }
 .caption {
 	font-size: 12px;
