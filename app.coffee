@@ -31,13 +31,13 @@ instagram.getTagMedia 'goducks', (err, photos) ->
 	last_set = photos.data
 
 update_tag_media = (object_id) ->
-	instagram.getTagMedia(object_id), (err, data) ->
+	instagram.getTagMedia object_id, (err, data) ->
 		last_set = data.data
 		io.sockets.emit 'bootstrap', last_set #TODO: refactor
 		console.log('tag', data)
 
 update_geo_media = (object_id) ->
-	instagram.getGeoMedia(object_id), (err, data) ->
+	instagram.getGeoMedia object_id, (err, data) ->
 		last_set = data.data
 		io.sockets.emit 'bootstrap', last_set #TODO: refactor
 		console.log('geo', data)
@@ -73,7 +73,7 @@ app.get '/build', (req, res) ->
 
 
 
-### blah blah blah below
+# blah blah blah below
 
 #app.get '/push_test', (req, res) ->
 #	res.send 200, ''
