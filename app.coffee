@@ -42,13 +42,15 @@ update_geo_media = (object_id) ->
 		io.sockets.emit 'bootstrap', last_set #TODO: refactor
 		console.log('geo', data)
 
-# Instagram's webhook hits this
-app.all '/notify/:id', (req, res) ->
+
+app.get '/notify/:id', (req, res) -> # confirm the subscription
 	if req.query and req.query['hub.mode'] is 'subscribe'
 		console.log 'Confirming new Instagram real-time subscription for #{req.params.id}...'
 		res.send req.query['hub.challenge'] 
-		return
+	else
+		console.log "Weird request to /notify, didn't have a hub.mode..."
 
+app.post '/notify/:id', (req, res) -> # receive the webhook, we got a new photo!
 	notifications = req.body
 	console.log 'Notification for', req.params.id # '. Had', notifications.length, 'item(s). Subscription ID:', req.body[0].subscription_id
 	console.log notifications
