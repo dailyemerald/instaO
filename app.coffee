@@ -58,6 +58,7 @@ app.get '/notify', (req, res) -> # confirm the subscription
 		res.send req.query['hub.challenge'] 
 	else
 		console.log "Weird request to /notify, didn't have a hub.mode..."
+		res.send 'OK'
 
 app.post '/notify/:id', (req, res) -> # receive the webhook, we got a new photo!
 	console.log 'Notification for', req.params.id # '. Had', notifications.length, 'item(s). Subscription ID:', req.body[0].subscription_id
@@ -65,17 +66,14 @@ app.post '/notify/:id', (req, res) -> # receive the webhook, we got a new photo!
 	for notification in req.body
 		update_tag_media(notification.object_id) if notification.object is "tag"	        
 		update_geo_media(notification.object_id) if notification.object is "geo"	        
-	res.send 200
-
-app.get '/list', (req, res) ->
-	console.log '/list'
-	instagram.listSubscriptions (err, resp, data) ->
-		res.json [err, resp, data]
+	res.send 'OK'
 
 update_geo_media('3503334')
 update_tag_media('goducks')
 
-
+setInterval ->
+	console.log(last_set.length, "last_set length")
+, 5000
 
 
 
