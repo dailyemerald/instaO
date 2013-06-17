@@ -83,7 +83,9 @@ setInterval ->
 	update_tag_media('goducks')
 , 5000
 
-
+setTimeout ->
+	io.sockets.emit 'reload', ''
+, 1500
 
 
 
