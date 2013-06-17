@@ -25,10 +25,14 @@ io.on 'connection', (socket) ->
 app.get '/stats', (req, res) ->
 	res.json process.memoryUsage()
 
-db_doesnt_include = (id) ->
-	for item in last_set
-		return false if item.id == id
-	return true
+db_doesnt_include = (db, id) ->
+	ids = db.map (item) ->
+		item.id
+	return ids.indexOf(id) < 0
+
+console.log("should be false:", db_doesnt_include([{id: 1}, {id: 2}], 1))
+console.log("should be false:", db_doesnt_include([{id: 1}, {id: 2}], 2))
+console.log("should be true:",  db_doesnt_include([{id: 1}, {id: 2}], 3))
 
 insert_if_new = (photo) ->
 	if db_doesnt_include(last_set, photo.id)
@@ -48,6 +52,7 @@ update_tag_media = (object_id) ->
 update_geo_media = (object_id) ->
 	console.log('update_geo_media')
 	instagram.getGeoMedia object_id, (err, data) ->
+		console.log('update_geo_media err', err)
 		for photo in data.data
 			insert_if_new(photo)
 		#console.log('geo', data)
@@ -73,6 +78,7 @@ update_tag_media('goducks')
 
 setInterval ->
 	console.log(last_set.length, "last_set length")
+	update_geo_media('3503334')
 , 5000
 
 
