@@ -25,25 +25,34 @@ io.on 'connection', (socket) ->
 app.get '/stats', (req, res) ->
 	res.json process.memoryUsage()
 
-instagram.getTagMedia 'goducks', (err, photos) ->
-	console.log "got #{photos.length} photos back"
-	console.log photos
-	last_set = photos.data
+db_doesnt_include = (id) ->
+	for item in last_set
+		return false if item.id == id
+	return true
+
+insert_if_new = (photo) ->
+	if db_doesnt_include(last_set, photo.id)
+		console.log("+ YES new: #{photo.id}")
+		last_set.push photo
+		io.sockets.emit 'new', photo
+	else
+		console.log("- NOT new: #{photo.id}")
 
 update_tag_media = (object_id) ->
+	console.log('update_tag_media')
 	instagram.getTagMedia object_id, (err, data) ->
-		last_set = data.data
-		io.sockets.emit 'bootstrap', last_set #TODO: refactor
-		console.log('tag', data)
+		for photo in data.data
+			insert_if_new(photo)		
+		#console.log('tag', data)
 
 update_geo_media = (object_id) ->
+	console.log('update_geo_media')
 	instagram.getGeoMedia object_id, (err, data) ->
-		last_set = data.data
-		io.sockets.emit 'bootstrap', last_set #TODO: refactor
-		console.log('geo', data)
+		for photo in data.data
+			insert_if_new(photo)
+		#console.log('geo', data)
 
-
-app.get '/notify/:id', (req, res) -> # confirm the subscription
+app.get '/notify', (req, res) -> # confirm the subscription
 	if req.query and req.query['hub.mode'] is 'subscribe'
 		console.log "Confirming new Instagram real-time subscription for #{req.params.id} with #{req.query['hub.challenge']}"
 		res.send req.query['hub.challenge'] 
@@ -51,25 +60,20 @@ app.get '/notify/:id', (req, res) -> # confirm the subscription
 		console.log "Weird request to /notify, didn't have a hub.mode..."
 
 app.post '/notify/:id', (req, res) -> # receive the webhook, we got a new photo!
-	notifications = req.body
 	console.log 'Notification for', req.params.id # '. Had', notifications.length, 'item(s). Subscription ID:', req.body[0].subscription_id
-	console.log notifications
-
-	for notification in notifications
+	console.log req.body
+	for notification in req.body
 		update_tag_media(notification.object_id) if notification.object is "tag"	        
 		update_geo_media(notification.object_id) if notification.object is "geo"	        
-
 	res.send 200
 
 app.get '/list', (req, res) ->
+	console.log '/list'
 	instagram.listSubscriptions (err, resp, data) ->
 		res.json [err, resp, data]
 
-app.get '/build', (req, res) ->
-	instagram.buildTagSubscription 'goducks', (err, data) ->
-		res.json {err: err, data: data}
-
-
+update_geo_media('3503334')
+update_tag_media('goducks')
 
 
 
