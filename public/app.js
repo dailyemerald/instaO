@@ -7,6 +7,10 @@ function PhotoCtrl($scope) {
   		return -1* parseInt(photo.created_time);
   	}
 
+  	$scope.isoTime = function(photo) {
+  		return new Date(parseInt(photo.created_time)*1000).toISOString()
+  	}
+
 	$scope.socket.on('bootstrap', function(photos) {
 		//console.log('bootstrap', photos);
 		$scope.$apply(function(scope) {

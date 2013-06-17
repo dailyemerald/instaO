@@ -33,6 +33,7 @@ db_doesnt_include = (db, id) ->
 console.log("should be false:", db_doesnt_include([{id: 1}, {id: 2}], 1))
 console.log("should be false:", db_doesnt_include([{id: 1}, {id: 2}], 2))
 console.log("should be true:",  db_doesnt_include([{id: 1}, {id: 2}], 3))
+console.log("should be false:", db_doesnt_include([{id: 1}, {id: 2}], 3))
 
 insert_if_new = (photo) ->
 	if db_doesnt_include(last_set, photo.id)
@@ -79,6 +80,7 @@ update_tag_media('goducks')
 setInterval ->
 	console.log(last_set.length, "last_set length")
 	update_geo_media('3503334')
+	update_tag_media('goducks')
 , 5000
 
 

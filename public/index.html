@@ -27,7 +27,10 @@
 	<div class="main">
 	<div ng-controller="PhotoCtrl">  
 		<section class="photo" ng-repeat="photo in photos | orderBy: byCreatedTime">
-			<img src="{{photo.images.low_resolution.url}}"></img>
+			<a href="{{photo.link}}">
+				<img src="{{photo.images.low_resolution.url}}"></img>
+			</a>
+			<time>{{photo.isoTime(photo)}}</time>
 			<p class="caption">{{photo.caption.text}}</p>
 		</section>      
 	</div>
