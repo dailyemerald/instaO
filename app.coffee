@@ -65,7 +65,7 @@ app.post '/notify/:id', (req, res) -> # receive the webhook, we got a new photo!
 	console.log req.body
 	for notification in req.body
 		update_tag_media(notification.object_id) if notification.object is "tag"	        
-		update_geo_media(notification.object_id) if notification.object is "geo"	        
+		update_geo_media(notification.object_id) if notification.object is "geography"	        
 	res.send 'OK'
 
 update_geo_media('3503334')
